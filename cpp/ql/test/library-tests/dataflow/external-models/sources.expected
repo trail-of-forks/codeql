@@ -5,6 +5,17 @@
 | azure.cpp:281:68:281:84 | call to ExtractBodyStream | remote |
 | azure.cpp:289:32:289:40 | call to GetHeader | remote |
 | azure.cpp:293:58:293:67 | call to GetHeaders | remote |
+| bmqa.cpp:64:16:64:33 | call to getPropertyAsInt32 | remote |
+| bmqa.cpp:69:31:69:49 | call to getPropertyAsString | remote |
+| bmqa.cpp:74:37:74:55 | call to getPropertyAsBinary | remote |
+| bmqa.cpp:83:14:83:17 | getData output argument | remote |
+| bmqa.cpp:84:8:84:24 | call to getPropertyAsBool | remote |
+| bmqa.cpp:85:8:85:24 | call to getPropertyAsChar | remote |
+| bmqa.cpp:86:8:86:25 | call to getPropertyAsShort | remote |
+| bmqa.cpp:87:8:87:25 | call to getPropertyAsInt32 | remote |
+| bmqa.cpp:88:8:88:25 | call to getPropertyAsInt64 | remote |
+| bmqa.cpp:89:8:89:26 | call to getPropertyAsString | remote |
+| bmqa.cpp:90:8:90:26 | call to getPropertyAsBinary | remote |
 | test.cpp:10:10:10:18 | call to ymlSource | local |
 | test.cpp:56:8:56:16 | call to ymlSource | local |
 | test.cpp:94:10:94:18 | call to ymlSource | local |

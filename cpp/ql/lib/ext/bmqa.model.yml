@@ -1,0 +1,19 @@
+# Model of BlazingMQ consumer-side message accessors (BloombergLP::bmqa) as remote sources.
+# A consumed message's payload and properties are attacker-controlled data from the broker.
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: sourceModel
+    data: # namespace, type, subtypes, name, signature, ext, output, kind, provenance
+      # The message payload, read into the caller's blob.
+      - ["BloombergLP::bmqa", "Message", true, "getData", "", "", "Argument[*0]", "remote", "manual"]
+      # Message property values read by name.
+      - ["BloombergLP::bmqa", "MessageProperties", true, "getPropertyAsString", "", "", "ReturnValue[*]", "remote", "manual"]
+      # getPropertyAsBinary returns `const bsl::vector<char>&`; taint the elements so byte reads
+      # (`data()`, `operator[]`) are tracked, not just the vector object.
+      - ["BloombergLP::bmqa", "MessageProperties", true, "getPropertyAsBinary", "", "", "ReturnValue[*].Element", "remote", "manual"]
+      - ["BloombergLP::bmqa", "MessageProperties", true, "getPropertyAsBool", "", "", "ReturnValue", "remote", "manual"]
+      - ["BloombergLP::bmqa", "MessageProperties", true, "getPropertyAsChar", "", "", "ReturnValue", "remote", "manual"]
+      - ["BloombergLP::bmqa", "MessageProperties", true, "getPropertyAsShort", "", "", "ReturnValue", "remote", "manual"]
+      - ["BloombergLP::bmqa", "MessageProperties", true, "getPropertyAsInt32", "", "", "ReturnValue", "remote", "manual"]
+      - ["BloombergLP::bmqa", "MessageProperties", true, "getPropertyAsInt64", "", "", "ReturnValue", "remote", "manual"]
