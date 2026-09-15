@@ -47,6 +47,13 @@ private class WrapperAssignment extends SummarizedCallable {
       ) and
       (if inputType = storedType then preservesValue = true else preservesValue = false)
       or
+      nullable = true and
+      exists(string stars | stars = ["", "*"] |
+        input = "ReturnValue[*" + stars + "]" and
+        output = "Argument[-1].Element[" + stars + "]"
+      ) and
+      preservesValue = true
+      or
       nullable = false and
       input = "Argument[-1]" and
       output = "ReturnValue[*]" and
@@ -80,11 +87,19 @@ private class ScalarEmplacement extends SummarizedCallable {
     string input, string output, boolean preservesValue, Provenance provenance, boolean isExact,
     string model
   ) {
-    exists(string stars | stars = ["", "*", "**", "***", "****"] |
-      input = "Argument[*" + stars + "0]" and
-      output = ["Argument[-1].Element[" + stars + "]", "ReturnValue[*" + stars + "]"]
+    (
+      exists(string stars | stars = ["", "*", "**", "***", "****"] |
+        input = "Argument[*" + stars + "0]" and
+        output = ["Argument[-1].Element[" + stars + "]", "ReturnValue[*" + stars + "]"]
+      ) and
+      preservesValue = false
+      or
+      exists(string stars | stars = ["", "*"] |
+        input = "ReturnValue[*" + stars + "]" and
+        output = "Argument[-1].Element[" + stars + "]"
+      ) and
+      preservesValue = true
     ) and
-    preservesValue = false and
     provenance = "manual" and
     isExact = true and
     model = ""
