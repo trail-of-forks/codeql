@@ -36,3 +36,31 @@ void variantEmplaceReference() {
   v.createInPlace<int>(0) = source();
   sink(v.the<int>()); // $ ir
 }
+
+void nullableCopyResultWrite() {
+  NullableValue<int> a, b;
+  b.makeValue(0);
+  (a = static_cast<const NullableValue<int>&>(b)).value() = source();
+  sink(a.value()); // $ ir
+}
+
+void nullableMoveResultWrite() {
+  NullableValue<int> a, b;
+  b.makeValue(0);
+  (a = static_cast<NullableValue<int>&&>(b)).value() = source();
+  sink(a.value()); // $ ir
+}
+
+void variantCopyResultWrite() {
+  VariantImp<Types<int>> a, b;
+  b.assign(0);
+  (a = static_cast<const VariantImp<Types<int>>&>(b)).the<int>() = source();
+  sink(a.the<int>()); // $ ir
+}
+
+void variantMoveResultWrite() {
+  VariantImp<Types<int>> a, b;
+  b.assign(0);
+  (a = static_cast<VariantImp<Types<int>>&&>(b)).the<int>() = source();
+  sink(a.the<int>()); // $ ir
+}

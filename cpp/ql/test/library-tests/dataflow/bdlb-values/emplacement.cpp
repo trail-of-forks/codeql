@@ -44,3 +44,36 @@ void ignoredArgumentVariant() {
   v.createInPlace<Constructed>(source(), 0);
   sink(v.the<Constructed>().value);
 }
+
+// Scalar destinations can still require a user-defined input conversion.
+struct ConvertedNumber {
+  int payload;
+  operator int() const { return payload; }
+};
+struct IgnoredNumber {
+  int payload;
+  operator int() const { return 0; }
+};
+void nullableScalarConversion() {
+  ConvertedNumber input = {source()};
+  sink(static_cast<int>(input)); // $ ir
+  BloombergLP::bdlb::NullableValue<int> n;
+  n.makeValueInplace(input);
+  sink(n.value()); // $ ir
+}
+void variantScalarConversion() {
+  ConvertedNumber input = {source()};
+  sink(static_cast<int>(input)); // $ ir
+  BloombergLP::bdlb::Variant<int> v;
+  v.createInPlace<int>(input);
+  sink(v.the<int>()); // $ ir
+}
+void ignoredScalarConversions() {
+  IgnoredNumber input = {source()};
+  BloombergLP::bdlb::NullableValue<int> n;
+  n.makeValueInplace(input);
+  sink(n.value());
+  BloombergLP::bdlb::Variant<int> v;
+  v.createInPlace<int>(input);
+  sink(v.the<int>());
+}

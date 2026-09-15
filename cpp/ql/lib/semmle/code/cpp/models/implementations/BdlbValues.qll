@@ -76,7 +76,12 @@ private class ScalarEmplacement extends SummarizedCallable {
       this.getDeclaringType().hasQualifiedName("BloombergLP::bdlb", "VariantImp")
     ) and
     this.getNumberOfParameters() = 1 and
-    this.getParameter(0).getUnspecifiedType() instanceof ReferenceType and
+    // Class inputs may invoke user-defined conversions even when the stored type is scalar.
+    exists(Type inputType |
+      inputType =
+        this.getParameter(0).getUnspecifiedType().(ReferenceType).getBaseType().getUnspecifiedType() and
+      (inputType instanceof ArithmeticType or inputType instanceof PointerType)
+    ) and
     exists(Type t |
       t = this.getType().getUnspecifiedType().(ReferenceType).getBaseType().getUnspecifiedType() and
       (t instanceof ArithmeticType or t instanceof PointerType)
